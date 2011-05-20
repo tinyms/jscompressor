@@ -6,8 +6,6 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#include <iostream>
-using namespace std;
 #include <gtkmm.h>
 #include "JsCompressorFrame.h"
 int main(int argc,char *argv[]) {
