@@ -8,8 +8,11 @@
 
 #include <iostream>
 using namespace std;
-
-int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+#include <gtkmm.h>
+#include "JsCompressorFrame.h"
+int main(int argc,char *argv[]) {
+	Gtk::Main main(argc,argv);
+	JsCompressorFrame mainFrame(Gtk::WINDOW_TOPLEVEL);
+	Gtk::Main::run(mainFrame);
 	return 0;
 }

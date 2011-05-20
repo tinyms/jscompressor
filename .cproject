@@ -14,56 +14,63 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.mingw.exe.debug.1023501516" name="Debug" parent="cdt.managedbuild.config.gnu.mingw.exe.debug">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.config.gnu.mingw.exe.debug.1023501516" name="Debug" parent="cdt.managedbuild.config.gnu.mingw.exe.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.1023501516." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.exe.debug.1673764807" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.debug">
-							<targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.exe.debug.1609301131" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.debug"/>
-							<builder buildPath="${workspace_loc:/JsCompressor/Debug}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.2085124105" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug.1816497433" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug">
+						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.mingw.exe.debug.1673764807" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.debug">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.exe.debug.1609301131" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.debug"/>
+							<builder buildPath="${workspace_loc:/JsCompressor/Debug}" errorParsers="" id="cdt.managedbuild.tool.gnu.builder.mingw.base.2085124105" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
+								</outputEntries>
+							</builder>
+							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug.1816497433" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug">
+								<option id="gnu.both.asm.option.include.paths.618118837" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.712936391" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.311441479" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.590961352" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug">
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.590961352" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug">
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level.273922870" name="Optimization Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.335447386" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.213465631" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/gtkmm-2.4"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/gtkmm-2.4/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/atkmm-1.6"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/giomm-2.4"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/giomm-2.4/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/pangomm-1.4"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/pangomm-1.4/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/gtk-2.0"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/gdkmm-2.4"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/gdkmm-2.4/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/atk-1.0"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/glibmm-2.4"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/glibmm-2.4/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/glib-2.0"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/glib-2.0/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/sigc++-2.0"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/sigc++-2.0/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/cairomm-1.0"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/cairomm-1.0/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/pango-1.0"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/cairo"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/freetype2"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/libpng14"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/lib/gtk-2.0/include"/>
-									<listOptionValue builtIn="false" value="d:/gtkmm/include/gdk-pixbuf-2.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/gtkmm-2.4"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/gtkmm-2.4/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/atkmm-1.6"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/giomm-2.4"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/giomm-2.4/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/pangomm-1.4"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/pangomm-1.4/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/gtk-2.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/gdkmm-2.4"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/gdkmm-2.4/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/atk-1.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/glibmm-2.4"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/glibmm-2.4/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/glib-2.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/glib-2.0/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/sigc++-2.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/sigc++-2.0/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/cairomm-1.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/cairomm-1.0/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/pango-1.0"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/cairo"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/freetype2"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/libpng14"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/lib/gtk-2.0/include"/>
+									<listOptionValue builtIn="false" value="D:/gtkmm/include/gdk-pixbuf-2.0"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.505004788" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.505004788" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.528778293" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug.1105053857" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug">
+							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug.1105053857" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug">
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.mingw.exe.debug.option.optimization.level.848389182" name="Optimization Level" superClass="gnu.c.compiler.mingw.exe.debug.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.mingw.exe.debug.option.debugging.level.1166180370" name="Debug Level" superClass="gnu.c.compiler.mingw.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.include.paths.862014853" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.433875822" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug.1026451685" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1115493614" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1115493614" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
 								<option id="gnu.cpp.link.option.libs.834062207" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="gtkmm-2.4"/>
 									<listOptionValue builtIn="false" value="atkmm-1.6"/>
@@ -576,7 +583,7 @@
 									<listOptionValue builtIn="false" value="d:/gtkmm/lib/gtk-2.0/include"/>
 									<listOptionValue builtIn="false" value="d:/gtkmm/include/gdk-pixbuf-2.0"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.2076961793" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -mms-bitfields" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.2076961793" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -mms-bitfields" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.368207537" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release.1100319594" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release">
