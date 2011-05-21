@@ -11,7 +11,7 @@
 #include <iostream>
 using namespace std;
 #include <gtkmm.h>
-
+#include "Utils.h"
 class JsCompressorFrame: public Gtk::Window {
 public:
 	JsCompressorFrame(Gtk::WindowType type);
