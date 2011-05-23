@@ -8,11 +8,17 @@
 #include "JsCompressorFrame.h"
 
 JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
-	mainLayout(false, 0), fileChooserBtn(), executeBtn("Execute") {
+	mainLayout(false, 0), fileChooserBtn(), executeBtn("压缩"),
+	homeSiteBtn("官网") {
+	this->set_position(Gtk::WIN_POS_CENTER);
+	//this->fileChooserBtn.set_select_multiple(true);
 	this->executeBtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_executeBtn_clicked));
+	this->homeSiteBtn.signal_clicked().connect(
+				sigc::mem_fun(*this, &JsCompressorFrame::evt_homeSiteBtn_clicked));
 	mainLayout.pack_start(fileChooserBtn, false, false, 0);
 	mainLayout.pack_start(executeBtn, false, false, 5);
+	mainLayout.pack_start(homeSiteBtn, false, false, 0);
 	this->add(mainLayout);
 	this->set_default_size(250, -1);
 	this->set_border_width(10);
@@ -34,6 +40,9 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 			util.getFileName(this->fileChooserBtn.get_filename().c_str()));
 	system(javaPath.c_str());
 	std::cout << javaPath << std::endl;
+}
+void JsCompressorFrame::evt_homeSiteBtn_clicked() {
+	system("explorer http://www.tinyms.com");
 }
 JsCompressorFrame::~JsCompressorFrame() {
 	// TODO Auto-generated destructor stub

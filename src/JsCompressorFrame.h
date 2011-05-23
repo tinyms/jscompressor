@@ -20,8 +20,10 @@ protected:
 	Gtk::VBox mainLayout;
 	Gtk::FileChooserButton fileChooserBtn;
 	Gtk::Button executeBtn;
+	Gtk::Button homeSiteBtn;
 protected:
 	virtual void evt_executeBtn_clicked();
+	virtual void evt_homeSiteBtn_clicked();
 };
 
 #endif /* JSCOMPRESSORFRAME_H_ */
