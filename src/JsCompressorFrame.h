@@ -21,6 +21,7 @@ protected:
 	Gtk::FileChooserButton fileChooserBtn;
 	Gtk::Button executeBtn;
 	Gtk::Button homeSiteBtn;
+	Gtk::MessageDialog messager;
 protected:
 	virtual void evt_executeBtn_clicked();
 	virtual void evt_homeSiteBtn_clicked();
