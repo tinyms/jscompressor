@@ -7,10 +7,10 @@
 
 #ifndef UTILS_H_
 #define UTILS_H_
-
+#include <stdlib.h>
+#include <iostream>
 #include <giomm/file.h>
 #include <glibmm/ustring.h>
-
 class Utils {
 public:
 	static std::string __APSPATH__;
@@ -20,6 +20,7 @@ public:
 public:
 	std::string getParentPath(const char*);
 	std::string getFileName(const char*);
+	void walkFiles(std::string currentDir,std::string spec,std::vector<std::string>& files);
 };
 
 #endif /* UTILS_H_ */
