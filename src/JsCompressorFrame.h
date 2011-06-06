@@ -29,7 +29,7 @@ protected:
 	 */
 	Gtk::Entry topPath;
 	Gtk::Label tipSelectFile;
-	Gtk::FileChooserButton fileChooserBtn;
+	Gtk::CheckButton m_jsOrCssChkbox;
 	Gtk::Button selectFolderBtn,executeBtn;
 	/**
 	 * dialogs
@@ -42,8 +42,10 @@ protected:
 	Gtk::TreeView m_filePreviewGrid;
 	Gtk::ScrolledWindow m_ScrolledWindow4FilePreview;
 protected:
+	virtual void evt_jsOrCssChkbox_clicked();
 	virtual void evt_selectFolderBtn_clicked();
 	virtual void evt_executeBtn_clicked();
+	void scan_files();
 };
 
 #endif /* JSCOMPRESSORFRAME_H_ */
