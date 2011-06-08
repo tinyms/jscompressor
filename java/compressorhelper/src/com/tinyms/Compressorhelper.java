@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * for batch js or css compress.
+ * author: tinyms.
  */
 package com.tinyms;
 
@@ -55,11 +55,16 @@ public class Compressorhelper {
             List<String> minFiles = new ArrayList<String>();
             String[] files = StringUtils.split(_files, ";");
             if (ArrayUtils.isNotEmpty(files)) {
+                final StringBuffer sb1 = new StringBuffer();
                 for (String fileFullPath : files) {
                     String baseName = FilenameUtils.getBaseName(fileFullPath);
                     String outputFileName = FilenameUtils.getFullPath(fileFullPath) + baseName + ".min." + FilenameUtils.getExtension(fileFullPath);
                     minFiles.add(outputFileName);
-                    compress(new File(fileFullPath), new File(outputFileName), _type);
+                    File output = new File(outputFileName);
+                    if (output.exists()) {
+                        output.delete();
+                    }
+                    compress(new File(fileFullPath), output, _type, _folder, sb1);
                 }
                 if (StringUtils.isNotBlank(_allInOne)) {
                     StringBuilder sb = new StringBuilder();
@@ -74,7 +79,11 @@ public class Compressorhelper {
                         }
                     }
                     try {
-                        FileUtils.writeStringToFile(new File(_folder + "/allinone." + _type), sb.toString(), "UTF-8");
+                        File output4aio = new File(_folder + "/allinone." + _type);
+                        if (output4aio.exists()) {
+                            output4aio.delete();
+                        }
+                        FileUtils.writeStringToFile(output4aio, sb.toString(), "UTF-8");
                     } catch (IOException ex) {
                         Logger.getLogger(Compressorhelper.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -83,11 +92,11 @@ public class Compressorhelper {
         }
     }
 
-    public static String compress(File f, File output, String _type) {
+    public static String compress(File f, File output, String _type, String _folder, final StringBuffer sb) {
         try {
             try {
                 Reader in = new InputStreamReader(new FileInputStream(f), "UTF-8");
-                if (_type.endsWith(".js")) {
+                if ("js".equals(_type)) {
                     try {
                         JavaScriptCompressor compressor = new JavaScriptCompressor(in, new ErrorReporter() {
 
@@ -96,8 +105,10 @@ public class Compressorhelper {
                                     int line, String lineSource, int lineOffset) {
                                 if (line < 0) {
                                     System.err.println("\n[WARNING] " + message);
+                                    sb.append("\n[WARNING] ").append(message);
                                 } else {
                                     System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+                                    sb.append("\n[WARNING] ").append(line).append(':').append(lineOffset).append(':').append(message);
                                 }
                             }
 
@@ -106,8 +117,10 @@ public class Compressorhelper {
                                     int line, String lineSource, int lineOffset) {
                                 if (line < 0) {
                                     System.err.println("\n[ERROR] " + message);
+                                    sb.append("\n[ERROR] ").append(message);
                                 } else {
                                     System.err.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
+                                    sb.append("\n[ERROR] ").append(line).append(':').append(lineOffset).append(':').append(message);
                                 }
                             }
 
@@ -128,7 +141,7 @@ public class Compressorhelper {
                     } catch (org.mozilla.javascript.EvaluatorException ex) {
                         log.info(ex.getLocalizedMessage());
                     }
-                } else if (_type.endsWith(".css")) {
+                } else if ("css".equals(_type)) {
                     try {
                         CssCompressor compressor = new CssCompressor(in);
                         in.close();
@@ -145,6 +158,11 @@ public class Compressorhelper {
             }
         } catch (UnsupportedEncodingException ex) {
             log.info(ex.getLocalizedMessage());
+        }
+        try {
+            FileUtils.writeStringToFile(new File(_folder + "/console.log"), sb.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(Compressorhelper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }
