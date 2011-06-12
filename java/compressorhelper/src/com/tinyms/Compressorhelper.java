@@ -79,7 +79,7 @@ public class Compressorhelper {
                         }
                     }
                     try {
-                        File output4aio = new File(_folder + "/allinone." + _type);
+                        File output4aio = new File(_folder + "/allinone.min." + _type);
                         if (output4aio.exists()) {
                             output4aio.delete();
                         }

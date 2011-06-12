@@ -124,9 +124,9 @@ void JsCompressorFrame::scan_files() {
 	}
 	std::string path = this->topPath.get_text();
 	if (this->m_jsOrCssChkbox.get_active() == true) {
-		util.walkFiles(path, "*.css", files);
+		util.walkFiles(path, "*.css","*.min.css", files);
 	} else {
-		util.walkFiles(path, "*.js", files);
+		util.walkFiles(path, "*.js","*.min.js", files);
 	}
 	size_t length = files.size();
 	for (size_t k = 0; k < length; k++) {

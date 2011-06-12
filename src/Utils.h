@@ -20,7 +20,7 @@ public:
 public:
 	std::string getParentPath(const char*);
 	std::string getFileName(const char*);
-	void walkFiles(std::string currentDir,std::string spec,std::vector<std::string>& files);
+	void walkFiles(std::string currentDir,std::string include,std::string exclude,std::vector<std::string>& files);
 };
 
 #endif /* UTILS_H_ */
