@@ -1,0 +1,10 @@
+JsCompressor，用来压缩混淆JS(Javascript)与CSS，使用YUI Compressor，一个开源的Java写成的处理工具，这里仅仅做了一个比较友好的前端，方便不熟悉Java的开发者使用。最新版本已经自带JRE，无需安装。
+
+可以压缩整个目录，分别生成带*.min.js、*.min.css的文件，还会生成一个所有js/css压缩到一个文件的allinone.min.js/allinone.min.css的文件。
+
+当前版本2.0，暂不支持排序后压缩，后续版本增加。
+
+注意：安装路径不能空格、压缩路径不要有中文。此问题后续修复。
+
+下载地址：
+http://code.google.com/p/tinyms-tools/downloads/list
