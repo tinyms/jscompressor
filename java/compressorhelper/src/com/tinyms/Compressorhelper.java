@@ -92,7 +92,7 @@ public class Compressorhelper {
         }
     }
 
-    public static String compress(File f, File output, String _type, String _folder, final StringBuffer sb) {
+    public static String compress(final File f, File output, String _type, String _folder, final StringBuffer sb) {
         try {
             try {
                 Reader in = new InputStreamReader(new FileInputStream(f), "UTF-8");
@@ -105,9 +105,11 @@ public class Compressorhelper {
                                     int line, String lineSource, int lineOffset) {
                                 if (line < 0) {
                                     System.err.println("\n[WARNING] " + message);
+                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
                                     sb.append("\n[WARNING] ").append(message);
                                 } else {
                                     System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
                                     sb.append("\n[WARNING] ").append(line).append(':').append(lineOffset).append(':').append(message);
                                 }
                             }
@@ -117,9 +119,11 @@ public class Compressorhelper {
                                     int line, String lineSource, int lineOffset) {
                                 if (line < 0) {
                                     System.err.println("\n[ERROR] " + message);
+                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
                                     sb.append("\n[ERROR] ").append(message);
                                 } else {
                                     System.err.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
+                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
                                     sb.append("\n[ERROR] ").append(line).append(':').append(lineOffset).append(':').append(message);
                                 }
                             }
