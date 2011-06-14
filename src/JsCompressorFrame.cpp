@@ -68,6 +68,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->set_default_size(600, 480);
 	this->set_border_width(10);
 	this->show_all();
+
 }
 void JsCompressorFrame::evt_executeBtn_clicked() {
 	if (this->seletedPath.size() <= 0) {
