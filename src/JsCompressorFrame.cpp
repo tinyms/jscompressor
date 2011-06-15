@@ -8,28 +8,31 @@
 #include "JsCompressorFrame.h"
 
 JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
-	mainLayout(false, 0), topLayout(false, 0), centerLayout(false, 0),
-			center2Layout(false, 0), buttomLayout(false, 0),
+	m_main_vbox(false, 0), m_top_hbox(false, 0), centerLayout(false, 0),
+			center2Layout(false, 0), m_bottom_hbox(false, 0),
 			tipSelectFile("文件夹:"),
 			m_tipConsoleWin("控制台 (如果有`WARNING`,可以忽略,但建议排除再压缩,直到控制台无任何提示)"),
 			m_jsOrCssChkbox("CSS(默认过滤出JS)"), selectFolderBtn(" 浏览.. "),
 			executeBtn(" 压缩&混淆 (DOS窗口消失则压缩完毕) ") {
+
 	//for main window
-	Gtk::Image appIcon("compress.png");
-	this->set_title("JsCompressor v2.0");
-	this->set_icon(appIcon.get_pixbuf());
+	Glib::ustring m_appTitle("JsCompressor v");
+	m_appTitle.append(JSCOMPRESSOR_VERSION);
+	this->set_title(m_appTitle);
+	Gtk::Image m_appIcon("compress.png");
+	this->set_icon(m_appIcon.get_pixbuf());
 	this->set_position(Gtk::WIN_POS_CENTER);
 
 	//begin top panel
-	this->topLayout.pack_start(this->tipSelectFile, false, false, 0);
-	this->topLayout.pack_start(this->topPath, true, true, 5);
+	this->m_top_hbox.pack_start(this->tipSelectFile, false, false, 0);
+	this->m_top_hbox.pack_start(this->m_root_path_entry, true, true, 5);
 	this->selectFolderBtn.signal_clicked().connect(
 			sigc::mem_fun(*this,
 					&JsCompressorFrame::evt_selectFolderBtn_clicked));
-	this->topLayout.pack_start(this->selectFolderBtn, false, false, 0);
+	this->m_top_hbox.pack_start(this->selectFolderBtn, false, false, 0);
 	this->m_jsOrCssChkbox.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_jsOrCssChkbox_clicked));
-	this->topLayout.pack_start(this->m_jsOrCssChkbox, false, false, 5);
+	this->m_top_hbox.pack_start(this->m_jsOrCssChkbox, false, false, 5);
 	//end
 
 	//begin center panel
@@ -56,15 +59,15 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	//begin bottom panel
 	this->executeBtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_executeBtn_clicked));
-	this->buttomLayout.pack_end(this->executeBtn, false, false, 0);
+	this->m_bottom_hbox.pack_end(this->executeBtn, false, false, 0);
 	//end
-	mainLayout.pack_start(this->topLayout, false, false, 0);
-	mainLayout.pack_start(this->centerLayout, true, true, 5);
-	this->mainLayout.pack_start(this->center2Layout, false, false, 0);
-	this->mainLayout.pack_start(this->m_scrolledWindow4ConsoleWin, false,
+	m_main_vbox.pack_start(this->m_top_hbox, false, false, 0);
+	m_main_vbox.pack_start(this->centerLayout, true, true, 5);
+	this->m_main_vbox.pack_start(this->center2Layout, false, false, 0);
+	this->m_main_vbox.pack_start(this->m_scrolledWindow4ConsoleWin, false,
 			false, 5);
-	mainLayout.pack_start(this->buttomLayout, false, false, 0);
-	this->add(mainLayout);
+	m_main_vbox.pack_start(this->m_bottom_hbox, false, false, 0);
+	this->add(m_main_vbox);
 	this->set_default_size(600, 480);
 	this->set_border_width(10);
 	this->show_all();
@@ -74,18 +77,24 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	if (this->seletedPath.size() <= 0) {
 		return;
 	}
-	this->listen_java_program();
+	this->init_logfile();
 	Glib::ustring targetFiles;
 	size_t length = files.size();
 	for (size_t k = 0; k < length; k++) {
 		targetFiles.append(";");
 		targetFiles.append(files[k]);
 	}
+
 	Glib::ustring cmd;
-	cmd.append(Utils::__APSPATH__.c_str());
-	cmd.append("/jre6/bin/javaw.exe -jar compressorhelper.jar");
+	if(WITH_JRE){
+		cmd.append("\"");
+		cmd.append(Utils::__APSPATH__.c_str());
+		cmd.append("/jre6/bin/javaw.exe\" -jar compressorhelper.jar");
+	}else{
+		cmd.append("javaw -jar compressorhelper.jar");
+	}
 	cmd.append(" -selected-folder ");
-	cmd.append(this->topPath.get_text());
+	cmd.append(this->m_root_path_entry.get_text());
 	cmd.append(" -files ");
 	cmd.append(targetFiles.substr(1, targetFiles.size()));
 	cmd.append(" -type ");
@@ -97,8 +106,10 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	cmd.append(" -aio ");
 	cmd.append("true");
 	system(cmd.c_str());
+	std::cout << cmd << std::endl;
+
 	this->read_logfile();
-	//std::cout << cmd << std::endl;
+
 }
 void JsCompressorFrame::evt_jsOrCssChkbox_clicked() {
 	this->scan_files();
@@ -111,7 +122,7 @@ void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 	gint flag;
 	flag = fcdlg.run();
 	if (flag == Gtk::RESPONSE_OK) {
-		this->topPath.set_text(fcdlg.get_current_folder());
+		this->m_root_path_entry.set_text(fcdlg.get_current_folder());
 		this->seletedPath = fcdlg.get_current_folder();
 		this->scan_files();
 		this->clear_log();
@@ -120,10 +131,10 @@ void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 void JsCompressorFrame::scan_files() {
 	files.clear();
 	this->m_filePreviewStore->clear();
-	if (this->topPath.get_text_length() <= 0) {
+	if (this->m_root_path_entry.get_text_length() <= 0) {
 		return;
 	}
-	std::string path = this->topPath.get_text();
+	std::string path = this->m_root_path_entry.get_text();
 	if (this->m_jsOrCssChkbox.get_active() == true) {
 		util.walkFiles(path, "*.css","*.min.css", files);
 	} else {
@@ -135,7 +146,7 @@ void JsCompressorFrame::scan_files() {
 		row[this->m_column_def.m_file_full_path] = files[k];
 	}
 }
-void JsCompressorFrame::listen_java_program() {
+void JsCompressorFrame::init_logfile() {
 	std::string logfilePath = seletedPath + "/console.log";
 	Glib::RefPtr<Gio::File> logfile = Gio::File::create_for_path(logfilePath);
 	if (!logfile->query_exists()) {
@@ -155,14 +166,10 @@ void JsCompressorFrame::evt_logfile_changed(
 	this->read_logfile();
 }
 void JsCompressorFrame::read_logfile() {
-	std::string logfilePath = seletedPath + "/console.log";
-	Glib::RefPtr<Gio::File> logfile = Gio::File::create_for_path(logfilePath);
-	char* content;
-	gsize length;
-	logfile->load_contents(content, length);
-	std::string abc(content);
+	Glib::ustring logfilePath = seletedPath + "/console.log";
+	Glib::ustring info = tinyms::FileUtils::read(logfilePath);
 	this->m_logBuffer = Gtk::TextBuffer::create();
-	this->m_logBuffer->set_text(abc);
+	this->m_logBuffer->set_text(info);
 	this->m_consoleWin.set_buffer(this->m_logBuffer);
 }
 void JsCompressorFrame::clear_log() {

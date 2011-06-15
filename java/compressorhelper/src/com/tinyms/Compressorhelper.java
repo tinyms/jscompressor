@@ -104,13 +104,13 @@ public class Compressorhelper {
                             public void warning(String message, String sourceName,
                                     int line, String lineSource, int lineOffset) {
                                 if (line < 0) {
-                                    System.err.println("\n[WARNING] " + message);
-                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
-                                    sb.append("\n[WARNING] ").append(message);
+                                    //System.err.println("[WARNING] " + message+"\n");
+                                    sb.append("[FILE] ").append(f.getAbsolutePath()).append("\n");
+                                    sb.append("[WARNING] ").append(message).append("\n\n");
                                 } else {
-                                    System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
-                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
-                                    sb.append("\n[WARNING] ").append(line).append(':').append(lineOffset).append(':').append(message);
+                                    //System.err.println("[WARNING] " + line + ':' + lineOffset + ':' + message+"\n");
+                                    sb.append("[FILE] ").append(f.getAbsolutePath()).append("\n");
+                                    sb.append("[WARNING] ").append(line).append(':').append(lineOffset).append(':').append(message).append("\n\n");
                                 }
                             }
 
@@ -118,13 +118,13 @@ public class Compressorhelper {
                             public void error(String message, String sourceName,
                                     int line, String lineSource, int lineOffset) {
                                 if (line < 0) {
-                                    System.err.println("\n[ERROR] " + message);
-                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
-                                    sb.append("\n[ERROR] ").append(message);
+                                    //System.err.println("[ERROR] " + message+"\n");
+                                    sb.append("[FILE] ").append(f.getAbsolutePath()).append("\n");
+                                    sb.append("[ERROR] ").append(message).append("\n\n");
                                 } else {
-                                    System.err.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
-                                    sb.append("\n[FILE] ").append(f.getAbsolutePath());
-                                    sb.append("\n[ERROR] ").append(line).append(':').append(lineOffset).append(':').append(message);
+                                    //System.err.println("[ERROR] " + line + ':' + lineOffset + ':' + message+"\n");
+                                    sb.append("[FILE] ").append(f.getAbsolutePath()).append("\n");
+                                    sb.append("[ERROR] ").append(line).append(':').append(lineOffset).append(':').append(message).append("\n\n");
                                 }
                             }
 
@@ -164,7 +164,7 @@ public class Compressorhelper {
             log.info(ex.getLocalizedMessage());
         }
         try {
-            FileUtils.writeStringToFile(new File(_folder + "/console.log"), sb.toString());
+            FileUtils.writeStringToFile(new File(_folder + "/console.log"), sb.toString(),"UTF-8");
         } catch (IOException ex) {
             Logger.getLogger(Compressorhelper.class.getName()).log(Level.SEVERE, null, ex);
         }

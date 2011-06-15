@@ -14,7 +14,7 @@ FileUtils::FileUtils() {
 	// TODO Auto-generated constructor stub
 
 }
-Glib::ustring FileUtils::escapeBlank(Glib::ustring& path) {
+Glib::ustring FileUtils::escapeBlank(Glib::ustring path) {
 	Glib::ustring winPath("");
 	Glib::RefPtr<Glib::Regex> rpl = Glib::Regex::create(" ");
 	std::vector<Glib::ustring> arr = rpl->split(path);
@@ -28,7 +28,7 @@ Glib::ustring FileUtils::escapeBlank(Glib::ustring& path) {
 	//Glib::ustring result = rpl->replace(path.c_str(),path.size(),0,rplStr);
 	//std::cout<<result<<std::endl;
 }
-Glib::ustring FileUtils::read(const char* fileFullPath) {
+Glib::ustring FileUtils::read(Glib::ustring fileFullPath) {
 	Glib::RefPtr<Gio::File> txtfile = Gio::File::create_for_path(fileFullPath);
 	char* content;
 	gsize length;
@@ -41,6 +41,8 @@ void FileUtils::write(const char* fileFullPath,const char* content){
 	if(!txtfile->query_exists()){
 		txtfile->create_file()->write(content);
 	}else{
+		txtfile->remove();
+		txtfile->create_file()->write(content);
 	}
 }
 FileUtils::~FileUtils() {

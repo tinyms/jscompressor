@@ -17,8 +17,8 @@ public:
 	FileUtils();
 	virtual ~FileUtils();
 public:
-	static Glib::ustring escapeBlank(Glib::ustring& path);
-	static Glib::ustring read(const char* fileFullPath);
+	static Glib::ustring escapeBlank(Glib::ustring path);
+	static Glib::ustring read(Glib::ustring fileFullPath);
 	static void write(const char* fileFullPath,const char* content);
 };
 

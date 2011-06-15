@@ -8,13 +8,26 @@
 #ifndef JSCOMPRESSORFRAME_H_
 #define JSCOMPRESSORFRAME_H_
 
+#ifndef JSCOMPRESSOR_VERSION
+#define JSCOMPRESSOR_VERSION "3.0"
+#endif
+
+#ifndef WITH_JRE
+#define WITH_JRE true
+#endif
+
 #include <iostream>
 using namespace std;
 #include <gtkmm.h>
 #include <glibmm/slisthandle.h>
 #include <giomm/filemonitor.h>
+
 #include "Utils.h"
+#include "FileUtils.h"
 #include "FilePreviewColumnDefinition.h"
+
+using namespace tinyms;
+
 class JsCompressorFrame: public Gtk::Window {
 public:
 	JsCompressorFrame(Gtk::WindowType type);
@@ -23,12 +36,12 @@ protected:
 	/**
 	 * layouts
 	 */
-	Gtk::VBox mainLayout;
-	Gtk::HBox topLayout, centerLayout, center2Layout, buttomLayout;
+	Gtk::VBox m_main_vbox;
+	Gtk::HBox m_top_hbox, centerLayout, center2Layout, m_bottom_hbox;
 	/**
 	 * text view
 	 */
-	Gtk::Entry topPath;
+	Gtk::Entry m_root_path_entry;
 	Gtk::ScrolledWindow m_scrolledWindow4ConsoleWin;
 	Gtk::TextView m_consoleWin;
 	Gtk::Label tipSelectFile;
@@ -59,7 +72,7 @@ protected:
 			const Glib::RefPtr<Gio::File>& other_file,
 			Gio::FileMonitorEvent event_type);
 	void scan_files();
-	void listen_java_program();
+	void init_logfile();
 	void read_logfile();
 	void clear_log();
 };
