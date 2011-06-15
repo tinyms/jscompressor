@@ -9,6 +9,7 @@
 #define FILEUTILS_H_
 #include <glibmm/regex.h>
 #include <glibmm/ustring.h>
+#include <giomm/file.h>
 namespace tinyms {
 
 class FileUtils {
@@ -16,7 +17,9 @@ public:
 	FileUtils();
 	virtual ~FileUtils();
 public:
-	Glib::ustring escapeBlank(Glib::ustring& path);
+	static Glib::ustring escapeBlank(Glib::ustring& path);
+	static Glib::ustring read(const char* fileFullPath);
+	static void write(const char* fileFullPath,const char* content);
 };
 
 }

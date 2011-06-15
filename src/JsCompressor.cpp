@@ -16,9 +16,8 @@ using namespace std;
 using namespace tinyms;
 int main(int argc, char *argv[]) {
 	Gtk::Main main(argc, argv);
-	tinyms::FileUtils fileUtils;
 	Glib::ustring path("c:/abc cc/kkk/java.exe");
-	fileUtils.escapeBlank(path);
+	tinyms::FileUtils::escapeBlank(path);
 	Utils::__APSPATH__=Gio::File::create_for_path(argv[0])->get_parent()->get_path();
 	JsCompressorFrame mainFrame(Gtk::WINDOW_TOPLEVEL);
 	Gtk::Main::run(mainFrame);
