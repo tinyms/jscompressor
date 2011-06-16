@@ -95,7 +95,7 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	Glib::ustring cmd;
 	if (WITH_JRE) {
 		cmd.append("\"");
-		cmd.append(Utils::__APSPATH__.c_str());
+		cmd.append(tinyms::FileUtils::__APSPATH__.c_str());
 		cmd.append("/jre6/bin/javaw.exe\" -jar compressorhelper.jar");
 	} else {
 		cmd.append("javaw -jar compressorhelper.jar");
@@ -131,8 +131,11 @@ void JsCompressorFrame::evt_jsOrCssChkbox_clicked() {
 	this->scan_files();
 }
 void JsCompressorFrame::evt_selectFolderBtn_clicked() {
+	std::map<std::string, std::string> config;
+	tinyms::FileUtils::config_read(config);
 	Gtk::FileChooserDialog fcdlg("请选择一个文件夹",
 			Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	fcdlg.set_current_folder(config["preSelectedPath"]);
 	fcdlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	fcdlg.add_button("选择", Gtk::RESPONSE_OK);
 	gint flag;
@@ -140,6 +143,8 @@ void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 	if (flag == Gtk::RESPONSE_OK) {
 		this->m_root_path_entry.set_text(fcdlg.get_current_folder());
 		this->seletedPath = fcdlg.get_current_folder();
+		config["preSelectedPath"]=this->seletedPath;
+		tinyms::FileUtils::config_write(config);
 		this->scan_files();
 		this->clear_log();
 	}
@@ -152,9 +157,9 @@ void JsCompressorFrame::scan_files() {
 	}
 	std::string path = this->m_root_path_entry.get_text();
 	if (this->m_jsOrCssChkbox.get_active() == true) {
-		util.walkFiles(path, "*.css", "*.min.css", files);
+		tinyms::FileUtils::walkFiles(path, "*.css", "*.min.css", files);
 	} else {
-		util.walkFiles(path, "*.js", "*.min.js", files);
+		tinyms::FileUtils::walkFiles(path, "*.js", "*.min.js", files);
 	}
 	size_t length = files.size();
 	for (size_t k = 0; k < length; k++) {

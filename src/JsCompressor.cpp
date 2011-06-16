@@ -6,15 +6,13 @@
 // Description : copress js or css
 //============================================================================
 #include <gtkmm.h>
-#include <giomm/file.h>
-#include <glibmm/ustring.h>
-#include "Utils.h"
+#include "FileUtils.h"
 #include "JsCompressorFrame.h"
-
+using namespace tinyms;
 int main(int argc, char *argv[]) {
 
 	Gtk::Main main(argc, argv);
-	Utils::__APSPATH__=Gio::File::create_for_path(argv[0])->get_parent()->get_path();
+	tinyms::FileUtils::__APSPATH__=tinyms::FileUtils::parent(argv[0])->get_path();
 
 	JsCompressorFrame mainFrame(Gtk::WINDOW_TOPLEVEL);
 	Gtk::Main::run(mainFrame);

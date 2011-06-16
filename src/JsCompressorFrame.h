@@ -23,7 +23,6 @@ using namespace std;
 #include <glibmm/slisthandle.h>
 #include <giomm/filemonitor.h>
 
-#include "Utils.h"
 #include "FileUtils.h"
 #include "FilePreviewColumnDefinition.h"
 
@@ -62,7 +61,6 @@ protected:
 	Gtk::TreeView m_filePreviewGrid;
 	Gtk::ScrolledWindow m_ScrolledWindow4FilePreview;
 	//
-	Utils util;
 	std::vector<std::string> files;
 	//Glib::RefPtr<Gio::FileMonitor> logmonitor;
 	Glib::RefPtr<Gtk::TextBuffer> m_logBuffer;

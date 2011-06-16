@@ -34,7 +34,6 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.335447386" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.213465631" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="D:/gtkmm/include/gtkmm-2.4"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib/jsoncpp-src-0.6.0-rc2/include}&quot;"/>
 									<listOptionValue builtIn="false" value="D:/gtkmm/lib/gtkmm-2.4/include"/>
 									<listOptionValue builtIn="false" value="D:/gtkmm/include/atkmm-1.6"/>
 									<listOptionValue builtIn="false" value="D:/gtkmm/include/giomm-2.4"/>
