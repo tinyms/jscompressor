@@ -13,7 +13,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 			tipSelectFile("文件夹:"),
 			m_tipConsoleWin("控制台 (如果有`WARNING`,可以忽略,但建议排除再压缩,直到控制台无任何提示)"),
 			m_jsOrCssChkbox("CSS(默认过滤出JS)"), selectFolderBtn(" 浏览.. "),
-			executeBtn(" 压缩&混淆 (DOS窗口消失则压缩完毕) ") {
+			executeBtn(" 压缩&混淆 (DOS窗口消失则压缩完毕) "){
 
 	//for main window
 	Glib::ustring m_appTitle("JsCompressor v");
@@ -57,6 +57,13 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	//end
 
 	//begin bottom panel
+	this->m_home_label.set_label("©tinyms.com 2011");
+	this->m_home_eventbox.signal_button_press_event().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_gohome_clicked));
+	this->m_home_eventbox.signal_enter_notify_event().connect(
+				sigc::mem_fun(*this, &JsCompressorFrame::evt_gohome_enter));
+	this->m_home_eventbox.add(this->m_home_label);
+	this->m_bottom_hbox.pack_start(this->m_home_eventbox, false, false, 0);
 	this->executeBtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_executeBtn_clicked));
 	this->m_bottom_hbox.pack_end(this->executeBtn, false, false, 0);
@@ -68,7 +75,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 			false, 5);
 	m_main_vbox.pack_start(this->m_bottom_hbox, false, false, 0);
 	this->add(m_main_vbox);
-	this->set_default_size(600, 480);
+	this->set_default_size(520, 480);
 	this->set_border_width(10);
 	this->show_all();
 
@@ -86,11 +93,11 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	}
 
 	Glib::ustring cmd;
-	if(WITH_JRE){
+	if (WITH_JRE) {
 		cmd.append("\"");
 		cmd.append(Utils::__APSPATH__.c_str());
 		cmd.append("/jre6/bin/javaw.exe\" -jar compressorhelper.jar");
-	}else{
+	} else {
 		cmd.append("javaw -jar compressorhelper.jar");
 	}
 	cmd.append(" -selected-folder ");
@@ -110,6 +117,15 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 
 	this->read_logfile();
 
+}
+bool JsCompressorFrame::evt_gohome_clicked(GdkEventButton* eb){
+	system("explorer http://www.tinyms.com");
+	return true;
+}
+bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb){
+	Gdk::Cursor c(Gdk::HAND1);
+	this->m_home_label.get_window()->set_cursor(c);
+	return true;
 }
 void JsCompressorFrame::evt_jsOrCssChkbox_clicked() {
 	this->scan_files();
@@ -136,9 +152,9 @@ void JsCompressorFrame::scan_files() {
 	}
 	std::string path = this->m_root_path_entry.get_text();
 	if (this->m_jsOrCssChkbox.get_active() == true) {
-		util.walkFiles(path, "*.css","*.min.css", files);
+		util.walkFiles(path, "*.css", "*.min.css", files);
 	} else {
-		util.walkFiles(path, "*.js","*.min.js", files);
+		util.walkFiles(path, "*.js", "*.min.js", files);
 	}
 	size_t length = files.size();
 	for (size_t k = 0; k < length; k++) {

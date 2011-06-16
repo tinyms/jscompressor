@@ -19,6 +19,7 @@
 #include <iostream>
 using namespace std;
 #include <gtkmm.h>
+#include <gdkmm/cursor.h>
 #include <glibmm/slisthandle.h>
 #include <giomm/filemonitor.h>
 
@@ -48,6 +49,8 @@ protected:
 	Gtk::Label m_tipConsoleWin;
 	Gtk::CheckButton m_jsOrCssChkbox;
 	Gtk::Button selectFolderBtn, executeBtn;
+	Gtk::Label m_home_label;
+	Gtk::EventBox m_home_eventbox;
 	/**
 	 * dialogs
 	 */
@@ -65,6 +68,8 @@ protected:
 	Glib::RefPtr<Gtk::TextBuffer> m_logBuffer;
 	std::string seletedPath;
 protected:
+	virtual bool evt_gohome_enter(GdkEventCrossing* eb);
+	virtual bool evt_gohome_clicked(GdkEventButton* eb);
 	virtual void evt_jsOrCssChkbox_clicked();
 	virtual void evt_selectFolderBtn_clicked();
 	virtual void evt_executeBtn_clicked();
