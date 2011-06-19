@@ -30,7 +30,7 @@ public:
 
 	static Glib::RefPtr<Gio::File> parent(const char* fileFullPath);
 	static Glib::RefPtr<Gio::File> touch(const char* fileFullPath);
-	static void walkFiles(std::string currentDir,std::string include,std::string exclude,std::vector<std::string>& files);
+	static void walkFiles(std::string currentDir,std::string include,std::string exclude,std::vector<Glib::ustring>& files);
 };
 
 }

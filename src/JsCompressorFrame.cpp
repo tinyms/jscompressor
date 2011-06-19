@@ -42,7 +42,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->m_filePreviewGrid.set_rules_hint();
 	this->m_filePreviewGrid.append_column("文件名",
 			this->m_filePreviewStore->m_colsDef.m_file_full_path);
-	this->m_filePreviewGrid.set_reorderable();
+	//this->m_filePreviewGrid.set_reorderable();
 	//evt for grid
 	this->m_filePreviewGrid.signal_drag_motion().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_drag_motion));
@@ -90,7 +90,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 			false, 5);
 	m_main_vbox.pack_start(this->m_bottom_hbox, false, false, 0);
 	this->add(m_main_vbox);
-	this->set_default_size(520, 480);
+	this->set_default_size(600, 480);
 	this->set_border_width(10);
 	this->show_all();
 
@@ -100,6 +100,7 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 		return;
 	}
 	this->init_logfile();
+	this->iter_filelist();
 	Glib::ustring targetFiles;
 	size_t length = files.size();
 	for (size_t k = 0; k < length; k++) {
@@ -205,9 +206,16 @@ void JsCompressorFrame::init_logfile() {
 		logfile->remove();
 		logfile->create_file();
 	}
-	//	logmonitor = logfile->monitor_file();
-	//	logmonitor->signal_changed().connect(
-	//			sigc::mem_fun(*this, &JsCompressorFrame::evt_logfile_changed));
+}
+void JsCompressorFrame::iter_filelist(){
+	this->files.clear();
+	Gtk::TreeNodeChildren child = this->m_filePreviewStore->children();
+	Gtk::TreeModel::iterator it;
+	for(it=child.begin();it!=child.end();it++){
+		Gtk::TreeRow row = *it;
+		this->files.push_back(row[this->m_filePreviewStore->m_colsDef.m_file_full_path]);
+		//std::cout<<tr[this->m_filePreviewStore->m_colsDef.m_file_full_path]<<std::endl;
+	}
 }
 void JsCompressorFrame::evt_logfile_changed(
 		const Glib::RefPtr<Gio::File>& file,
@@ -228,20 +236,22 @@ void JsCompressorFrame::clear_log() {
 	this->m_consoleWin.set_buffer(this->m_logBuffer);
 }
 void JsCompressorFrame::evt_uptoolbtn_clicked() {
-	Gtk::TreeModel::iterator current =
-			this->m_filePreviewGrid.get_selection()->get_selected();
+	current = this->m_filePreviewGrid.get_selection()->get_selected();
 	if (!current)
 		return;
+	if (current == this->m_filePreviewStore->children().begin()) {
+		return;
+	}
 	Gtk::TreeModel::iterator up = current--;
 	if (up) {
 		this->m_filePreviewStore->iter_swap(current, up);
 	}
 }
 void JsCompressorFrame::evt_downtoolbtn_clicked() {
-	Gtk::TreeModel::iterator current =
-			this->m_filePreviewGrid.get_selection()->get_selected();
+	current = this->m_filePreviewGrid.get_selection()->get_selected();
 	if (!current)
 		return;
+
 	Gtk::TreeModel::iterator down = current++;
 	if (down) {
 		this->m_filePreviewStore->iter_swap(current, down);
@@ -254,25 +264,38 @@ void JsCompressorFrame::evt_removetoolbtn_clicked() {
 		return;
 	this->m_filePreviewStore->erase(current);
 }
+void JsCompressorFrame::evt_refreshtoolbtn_clicked() {
+	this->scan_files();
+}
 void JsCompressorFrame::bind_toolbutton4treeview_events() {
 	this->m_up_image.set("go-up.png");
 	this->m_down_image.set("go-down.png");
 	this->m_remove_image.set("window-close.png");
+	this->m_refresh_image.set("view-refresh.png");
 	this->m_up_toolbtn.set_icon_widget(this->m_up_image);
+	this->m_up_toolbtn.set_tooltip_text("上移");
 	this->m_down_toolbtn.set_icon_widget(this->m_down_image);
+	this->m_down_toolbtn.set_tooltip_text("下移");
 	this->m_remove_toolbtn.set_icon_widget(this->m_remove_image);
+	this->m_remove_toolbtn.set_tooltip_text("移除(不会真正删除文件)");
+	this->m_refresh_toolbtn.set_icon_widget(this->m_refresh_image);
+	this->m_refresh_toolbtn.set_tooltip_text("刷新(重新加载文件)");
 	this->m_up_toolbtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_uptoolbtn_clicked));
 	this->m_down_toolbtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_downtoolbtn_clicked));
 	this->m_remove_toolbtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_removetoolbtn_clicked));
+	this->m_refresh_toolbtn.signal_clicked().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_refreshtoolbtn_clicked));
 	this->m_toolbar4treeview_vbox.pack_start(this->m_up_toolbtn, false, false,
 			0);
 	this->m_toolbar4treeview_vbox.pack_start(this->m_down_toolbtn, false,
 			false, 0);
 	this->m_toolbar4treeview_vbox.pack_start(this->m_remove_toolbtn, false,
 			false, 0);
+	this->m_toolbar4treeview_vbox.pack_start(this->m_refresh_toolbtn, false,
+			false, 10);
 }
 JsCompressorFrame::~JsCompressorFrame() {
 	// TODO Auto-generated destructor stub

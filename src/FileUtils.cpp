@@ -83,7 +83,7 @@ Glib::RefPtr<Gio::File> FileUtils::touch(const char* fileFullPath) {
 	return Gio::File::create_for_path(fileFullPath);
 }
 void FileUtils::walkFiles(std::string currentDir, std::string include,
-		std::string exclude, std::vector<std::string>& files) {
+		std::string exclude, std::vector<Glib::ustring>& files) {
 	Glib::Dir dir(currentDir);
 	Glib::PatternSpec regx(include);
 	Glib::PatternSpec regx1(exclude);

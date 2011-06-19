@@ -51,8 +51,8 @@ protected:
 	Gtk::Label m_home_label;
 	Gtk::EventBox m_home_eventbox;
 	// toolbuttons
-	Gtk::ToolButton m_up_toolbtn,m_down_toolbtn,m_remove_toolbtn;
-	Gtk::Image m_up_image,m_down_image,m_remove_image;
+	Gtk::ToolButton m_up_toolbtn,m_down_toolbtn,m_remove_toolbtn,m_refresh_toolbtn;
+	Gtk::Image m_up_image,m_down_image,m_remove_image,m_refresh_image;
 	/**
 	 * toolbar
 	 */
@@ -64,10 +64,11 @@ protected:
 	Gtk::TreeView m_filePreviewGrid;
 	Gtk::ScrolledWindow m_ScrolledWindow4FilePreview;
 	//
-	std::vector<std::string> files;
+	std::vector<Glib::ustring> files;
 	//Glib::RefPtr<Gio::FileMonitor> logmonitor;
 	Glib::RefPtr<Gtk::TextBuffer> m_logBuffer;
 	std::string seletedPath;
+	Gtk::TreeModel::iterator current;
 protected:
 	virtual bool evt_gohome_enter(GdkEventCrossing* eb);
 	virtual bool evt_gohome_clicked(GdkEventButton* eb);
@@ -84,10 +85,12 @@ protected:
 	void init_logfile();
 	void read_logfile();
 	void clear_log();
+	void iter_filelist();
 	//toolbutton bind events
 	virtual void evt_uptoolbtn_clicked();
 	virtual void evt_downtoolbtn_clicked();
 	virtual void evt_removetoolbtn_clicked();
+	virtual void evt_refreshtoolbtn_clicked();
 	void bind_toolbutton4treeview_events();
 };
 
