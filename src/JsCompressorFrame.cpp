@@ -8,12 +8,12 @@
 #include "JsCompressorFrame.h"
 
 JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
-	m_main_vbox(false, 0), m_top_hbox(false, 0), centerLayout(false, 0),
-			center2Layout(false, 0), m_bottom_hbox(false, 0),
-			tipSelectFile("文件夹:"),
+	m_main_vbox(false, 0), m_toolbar4treeview_vbox(false,0), m_top_hbox(false, 0),
+			m_center_head_hbox(false, 0), m_center_foot_hbox(false, 0),
+			m_bottom_hbox(false, 0), m_selected_path_label("文件夹(不含中文和空格):"),
 			m_tipConsoleWin("控制台 (如果有`WARNING`,可以忽略,但建议排除再压缩,直到控制台无任何提示)"),
-			m_jsOrCssChkbox("CSS(默认过滤出JS)"), selectFolderBtn(" 浏览.. "),
-			executeBtn(" 压缩&混淆 (DOS窗口消失则压缩完毕) "){
+			m_jsOrCssChkbox("CSS(默认过滤JS)"), m_select_folder_btn(" 浏览.. "),
+			m_compress_btn(" 压缩&混淆 (DOS窗口消失则压缩完毕) ") {
 
 	//for main window
 	Glib::ustring m_appTitle("JsCompressor v");
@@ -24,30 +24,51 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->set_position(Gtk::WIN_POS_CENTER);
 
 	//begin top panel
-	this->m_top_hbox.pack_start(this->tipSelectFile, false, false, 0);
+	this->m_top_hbox.pack_start(this->m_selected_path_label, false, false, 0);
 	this->m_top_hbox.pack_start(this->m_root_path_entry, true, true, 5);
-	this->selectFolderBtn.signal_clicked().connect(
+	this->m_select_folder_btn.signal_clicked().connect(
 			sigc::mem_fun(*this,
 					&JsCompressorFrame::evt_selectFolderBtn_clicked));
-	this->m_top_hbox.pack_start(this->selectFolderBtn, false, false, 0);
+	this->m_top_hbox.pack_start(this->m_select_folder_btn, false, false, 0);
 	this->m_jsOrCssChkbox.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_jsOrCssChkbox_clicked));
 	this->m_top_hbox.pack_start(this->m_jsOrCssChkbox, false, false, 5);
 	//end
 
 	//begin center panel
-	this->m_filePreviewStore = Gtk::ListStore::create(this->m_column_def);
+	this->m_filePreviewStore = tinyms::FilePreviewStore::create();
 	this->m_filePreviewGrid.set_model(this->m_filePreviewStore);
+	this->m_filePreviewGrid.set_rules_hint();
 	this->m_filePreviewGrid.append_column("文件名",
-			this->m_column_def.m_file_full_path);
+			this->m_filePreviewStore->m_colsDef.m_file_full_path);
+	this->m_filePreviewGrid.set_reorderable();
+	//evt for grid
+	this->m_filePreviewGrid.signal_drag_motion().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_drag_motion));
+	this->m_filePreviewGrid.signal_key_release_event().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_key_release));
 	this->m_ScrolledWindow4FilePreview.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 	this->m_ScrolledWindow4FilePreview.set_policy(Gtk::POLICY_NEVER,
 			Gtk::POLICY_AUTOMATIC);
 	this->m_ScrolledWindow4FilePreview.add(this->m_filePreviewGrid);
-	this->centerLayout.pack_start(this->m_ScrolledWindow4FilePreview, true,
-			true, 0);
+
+	this->m_center_head_hbox.pack_start(this->m_ScrolledWindow4FilePreview,
+			true, true, 0);
+//	Gtk::Image img(tinyms::FileUtils::__APSPATH__+"/arrow_up.png");
+//	this->m_up_toolbtn.set_icon_widget(img);
+	this->m_up_image.set("go-up.png");
+	this->m_down_image.set("go-down.png");
+	this->m_remove_image.set("window-close.png");
+	this->m_up_toolbtn.set_icon_widget(this->m_up_image);
+	this->m_down_toolbtn.set_icon_widget(this->m_down_image);
+	this->m_remove_toolbtn.set_icon_widget(this->m_remove_image);
+	this->m_toolbar4treeview_vbox.pack_start(this->m_up_toolbtn,false,false,0);
+	this->m_toolbar4treeview_vbox.pack_start(this->m_down_toolbtn,false,false,0);
+	this->m_toolbar4treeview_vbox.pack_start(this->m_remove_toolbtn,false,false,0);
+	this->m_toolbar4treeview_vbox.set_size_request(24,-1);
+	this->m_center_head_hbox.pack_start(this->m_toolbar4treeview_vbox, false, false, 2);
 	//console window
-	this->center2Layout.pack_start(this->m_tipConsoleWin, false, false, 0);
+	this->m_center_foot_hbox.pack_start(this->m_tipConsoleWin, false, false, 0);
 	this->m_consoleWin.set_size_request(-1, 150);
 	this->m_consoleWin.set_editable(false);
 	this->m_scrolledWindow4ConsoleWin.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
@@ -61,16 +82,16 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->m_home_eventbox.signal_button_press_event().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_gohome_clicked));
 	this->m_home_eventbox.signal_enter_notify_event().connect(
-				sigc::mem_fun(*this, &JsCompressorFrame::evt_gohome_enter));
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_gohome_enter));
 	this->m_home_eventbox.add(this->m_home_label);
 	this->m_bottom_hbox.pack_start(this->m_home_eventbox, false, false, 0);
-	this->executeBtn.signal_clicked().connect(
+	this->m_compress_btn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_executeBtn_clicked));
-	this->m_bottom_hbox.pack_end(this->executeBtn, false, false, 0);
+	this->m_bottom_hbox.pack_end(this->m_compress_btn, false, false, 0);
 	//end
 	m_main_vbox.pack_start(this->m_top_hbox, false, false, 0);
-	m_main_vbox.pack_start(this->centerLayout, true, true, 5);
-	this->m_main_vbox.pack_start(this->center2Layout, false, false, 0);
+	m_main_vbox.pack_start(this->m_center_head_hbox, true, true, 5);
+	this->m_main_vbox.pack_start(this->m_center_foot_hbox, false, false, 0);
 	this->m_main_vbox.pack_start(this->m_scrolledWindow4ConsoleWin, false,
 			false, 5);
 	m_main_vbox.pack_start(this->m_bottom_hbox, false, false, 0);
@@ -118,11 +139,11 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	this->read_logfile();
 
 }
-bool JsCompressorFrame::evt_gohome_clicked(GdkEventButton* eb){
+bool JsCompressorFrame::evt_gohome_clicked(GdkEventButton* eb) {
 	system("explorer http://www.tinyms.com");
 	return true;
 }
-bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb){
+bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb) {
 	Gdk::Cursor c(Gdk::HAND1);
 	this->m_home_label.get_window()->set_cursor(c);
 	return true;
@@ -130,12 +151,26 @@ bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb){
 void JsCompressorFrame::evt_jsOrCssChkbox_clicked() {
 	this->scan_files();
 }
+bool JsCompressorFrame::evt_key_release(GdkEventKey* event) {
+	std::cout << gdk_keyval_name(event->keyval) << std::endl;
+	std::cout << event->string << std::endl;
+	std::cout << GDK_uparrow << std::endl;
+
+	return true;
+}
+bool JsCompressorFrame::evt_drag_motion(
+		const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time) {
+	std::cout << "zzz00" << std::endl;
+	return true;
+}
 void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 	std::map<std::string, std::string> config;
 	tinyms::FileUtils::config_read(config);
 	Gtk::FileChooserDialog fcdlg("请选择一个文件夹",
 			Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
-	fcdlg.set_current_folder(config["preSelectedPath"]);
+	if (config["preSelectedPath"].size() > 0) {
+		fcdlg.set_current_folder(config["preSelectedPath"]);
+	}
 	fcdlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	fcdlg.add_button("选择", Gtk::RESPONSE_OK);
 	gint flag;
@@ -143,7 +178,7 @@ void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 	if (flag == Gtk::RESPONSE_OK) {
 		this->m_root_path_entry.set_text(fcdlg.get_current_folder());
 		this->seletedPath = fcdlg.get_current_folder();
-		config["preSelectedPath"]=this->seletedPath;
+		config["preSelectedPath"] = this->seletedPath;
 		tinyms::FileUtils::config_write(config);
 		this->scan_files();
 		this->clear_log();
@@ -164,7 +199,7 @@ void JsCompressorFrame::scan_files() {
 	size_t length = files.size();
 	for (size_t k = 0; k < length; k++) {
 		Gtk::TreeModel::Row row = *(this->m_filePreviewStore->append());
-		row[this->m_column_def.m_file_full_path] = files[k];
+		row[this->m_filePreviewStore->m_colsDef.m_file_full_path] = files[k];
 	}
 }
 void JsCompressorFrame::init_logfile() {

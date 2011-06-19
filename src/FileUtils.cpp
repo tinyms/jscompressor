@@ -47,6 +47,9 @@ void FileUtils::write(const char* fileFullPath, const char* content) {
 }
 void FileUtils::config_read(std::map<std::string, std::string>& config) {
 	std::string config_path = __APSPATH__ + "/_config_";
+	if(!tinyms::FileUtils::touch(config_path.c_str())->query_exists()){
+		return;
+	}
 	cJSON *json = cJSON_Parse(read(config_path).c_str());
 	if(!json)return;
 	if (json->type == cJSON_Object) {
