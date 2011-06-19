@@ -21,7 +21,6 @@ using namespace std;
 #include <gtkmm.h>
 #include <gdkmm/cursor.h>
 #include <gdk/gdkkeysyms-compat.h>
-#include <glibmm/slisthandle.h>
 #include <giomm/filemonitor.h>
 
 #include "FileUtils.h"
@@ -80,10 +79,16 @@ protected:
 			Gio::FileMonitorEvent event_type);
 	virtual bool evt_key_release(GdkEventKey* event);
 	virtual bool evt_drag_motion(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
+	//
 	void scan_files();
 	void init_logfile();
 	void read_logfile();
 	void clear_log();
+	//toolbutton bind events
+	virtual void evt_uptoolbtn_clicked();
+	virtual void evt_downtoolbtn_clicked();
+	virtual void evt_removetoolbtn_clicked();
+	void bind_toolbutton4treeview_events();
 };
 
 #endif /* JSCOMPRESSORFRAME_H_ */

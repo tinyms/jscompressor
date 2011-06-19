@@ -8,9 +8,10 @@
 #include "JsCompressorFrame.h"
 
 JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
-	m_main_vbox(false, 0), m_toolbar4treeview_vbox(false,0), m_top_hbox(false, 0),
-			m_center_head_hbox(false, 0), m_center_foot_hbox(false, 0),
-			m_bottom_hbox(false, 0), m_selected_path_label("文件夹(不含中文和空格):"),
+	m_main_vbox(false, 0), m_toolbar4treeview_vbox(false, 0),
+			m_top_hbox(false, 0), m_center_head_hbox(false, 0),
+			m_center_foot_hbox(false, 0), m_bottom_hbox(false, 0),
+			m_selected_path_label("文件夹(不含中文和空格):"),
 			m_tipConsoleWin("控制台 (如果有`WARNING`,可以忽略,但建议排除再压缩,直到控制台无任何提示)"),
 			m_jsOrCssChkbox("CSS(默认过滤JS)"), m_select_folder_btn(" 浏览.. "),
 			m_compress_btn(" 压缩&混淆 (DOS窗口消失则压缩完毕) ") {
@@ -54,19 +55,12 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 
 	this->m_center_head_hbox.pack_start(this->m_ScrolledWindow4FilePreview,
 			true, true, 0);
-//	Gtk::Image img(tinyms::FileUtils::__APSPATH__+"/arrow_up.png");
-//	this->m_up_toolbtn.set_icon_widget(img);
-	this->m_up_image.set("go-up.png");
-	this->m_down_image.set("go-down.png");
-	this->m_remove_image.set("window-close.png");
-	this->m_up_toolbtn.set_icon_widget(this->m_up_image);
-	this->m_down_toolbtn.set_icon_widget(this->m_down_image);
-	this->m_remove_toolbtn.set_icon_widget(this->m_remove_image);
-	this->m_toolbar4treeview_vbox.pack_start(this->m_up_toolbtn,false,false,0);
-	this->m_toolbar4treeview_vbox.pack_start(this->m_down_toolbtn,false,false,0);
-	this->m_toolbar4treeview_vbox.pack_start(this->m_remove_toolbtn,false,false,0);
-	this->m_toolbar4treeview_vbox.set_size_request(24,-1);
-	this->m_center_head_hbox.pack_start(this->m_toolbar4treeview_vbox, false, false, 2);
+
+	this->bind_toolbutton4treeview_events();
+
+	this->m_toolbar4treeview_vbox.set_size_request(24, -1);
+	this->m_center_head_hbox.pack_start(this->m_toolbar4treeview_vbox, false,
+			false, 2);
 	//console window
 	this->m_center_foot_hbox.pack_start(this->m_tipConsoleWin, false, false, 0);
 	this->m_consoleWin.set_size_request(-1, 150);
@@ -232,6 +226,53 @@ void JsCompressorFrame::clear_log() {
 	this->m_logBuffer = Gtk::TextBuffer::create();
 	this->m_logBuffer->set_text("");
 	this->m_consoleWin.set_buffer(this->m_logBuffer);
+}
+void JsCompressorFrame::evt_uptoolbtn_clicked() {
+	Gtk::TreeModel::iterator current =
+			this->m_filePreviewGrid.get_selection()->get_selected();
+	if (!current)
+		return;
+	Gtk::TreeModel::iterator up = current--;
+	if (up) {
+		this->m_filePreviewStore->iter_swap(current, up);
+	}
+}
+void JsCompressorFrame::evt_downtoolbtn_clicked() {
+	Gtk::TreeModel::iterator current =
+			this->m_filePreviewGrid.get_selection()->get_selected();
+	if (!current)
+		return;
+	Gtk::TreeModel::iterator down = current++;
+	if (down) {
+		this->m_filePreviewStore->iter_swap(current, down);
+	}
+}
+void JsCompressorFrame::evt_removetoolbtn_clicked() {
+	Gtk::TreeModel::iterator current =
+			this->m_filePreviewGrid.get_selection()->get_selected();
+	if (!current)
+		return;
+	this->m_filePreviewStore->erase(current);
+}
+void JsCompressorFrame::bind_toolbutton4treeview_events() {
+	this->m_up_image.set("go-up.png");
+	this->m_down_image.set("go-down.png");
+	this->m_remove_image.set("window-close.png");
+	this->m_up_toolbtn.set_icon_widget(this->m_up_image);
+	this->m_down_toolbtn.set_icon_widget(this->m_down_image);
+	this->m_remove_toolbtn.set_icon_widget(this->m_remove_image);
+	this->m_up_toolbtn.signal_clicked().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_uptoolbtn_clicked));
+	this->m_down_toolbtn.signal_clicked().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_downtoolbtn_clicked));
+	this->m_remove_toolbtn.signal_clicked().connect(
+			sigc::mem_fun(*this, &JsCompressorFrame::evt_removetoolbtn_clicked));
+	this->m_toolbar4treeview_vbox.pack_start(this->m_up_toolbtn, false, false,
+			0);
+	this->m_toolbar4treeview_vbox.pack_start(this->m_down_toolbtn, false,
+			false, 0);
+	this->m_toolbar4treeview_vbox.pack_start(this->m_remove_toolbtn, false,
+			false, 0);
 }
 JsCompressorFrame::~JsCompressorFrame() {
 	// TODO Auto-generated destructor stub
