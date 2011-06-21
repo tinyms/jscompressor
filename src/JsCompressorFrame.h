@@ -81,7 +81,8 @@ protected:
 	virtual bool evt_key_release(GdkEventKey* event);
 	virtual bool evt_drag_motion(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
 	//
-	void scan_files();
+	void init();
+	void scan_files(std::string path);
 	void init_logfile();
 	void read_logfile();
 	void clear_log();

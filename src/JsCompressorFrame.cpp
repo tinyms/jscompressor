@@ -93,7 +93,16 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->set_default_size(600, 480);
 	this->set_border_width(10);
 	this->show_all();
-
+	this->init();
+}
+void JsCompressorFrame::init() {
+	//open prev path
+	std::map<std::string, std::string> config;
+	tinyms::FileUtils::config_read(config);
+	if (config["preSelectedPath"].size() > 0) {
+		this->m_root_path_entry.set_text(config["preSelectedPath"]);
+		this->scan_files(config["preSelectedPath"]);
+	}
 }
 void JsCompressorFrame::evt_executeBtn_clicked() {
 	if (this->seletedPath.size() <= 0) {
@@ -144,7 +153,7 @@ bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb) {
 	return true;
 }
 void JsCompressorFrame::evt_jsOrCssChkbox_clicked() {
-	this->scan_files();
+	this->scan_files(this->m_root_path_entry.get_text());
 }
 bool JsCompressorFrame::evt_key_release(GdkEventKey* event) {
 	std::cout << gdk_keyval_name(event->keyval) << std::endl;
@@ -175,17 +184,16 @@ void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 		this->seletedPath = fcdlg.get_current_folder();
 		config["preSelectedPath"] = this->seletedPath;
 		tinyms::FileUtils::config_write(config);
-		this->scan_files();
+		this->scan_files(this->m_root_path_entry.get_text());
 		this->clear_log();
 	}
 }
-void JsCompressorFrame::scan_files() {
+void JsCompressorFrame::scan_files(std::string path) {
 	files.clear();
 	this->m_filePreviewStore->clear();
-	if (this->m_root_path_entry.get_text_length() <= 0) {
+	if (path.size() <= 0) {
 		return;
 	}
-	std::string path = this->m_root_path_entry.get_text();
 	if (this->m_jsOrCssChkbox.get_active() == true) {
 		tinyms::FileUtils::walkFiles(path, "*.css", "*.min.css", files);
 	} else {
@@ -254,7 +262,7 @@ void JsCompressorFrame::evt_downtoolbtn_clicked() {
 		return;
 	Gtk::TreeModel::iterator down = current;
 	++down;
-	if(down==this->m_filePreviewStore->children().end()){
+	if (down == this->m_filePreviewStore->children().end()) {
 		return;
 	}
 	if (down) {
@@ -269,7 +277,7 @@ void JsCompressorFrame::evt_removetoolbtn_clicked() {
 	this->m_filePreviewStore->erase(current);
 }
 void JsCompressorFrame::evt_refreshtoolbtn_clicked() {
-	this->scan_files();
+	this->scan_files(this->m_root_path_entry.get_text());
 }
 void JsCompressorFrame::bind_toolbutton4treeview_events() {
 	this->m_up_image.set("go-up.png");
