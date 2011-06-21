@@ -17,6 +17,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 			m_compress_btn(" 压缩&混淆 (DOS窗口消失则压缩完毕) ") {
 
 	//for main window
+	this->set_opacity(0.97);
 	Glib::ustring m_appTitle("JsCompressor v");
 	m_appTitle.append(JSCOMPRESSOR_VERSION);
 	this->set_title(m_appTitle);
