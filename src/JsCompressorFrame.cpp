@@ -207,13 +207,14 @@ void JsCompressorFrame::init_logfile() {
 		logfile->create_file();
 	}
 }
-void JsCompressorFrame::iter_filelist(){
+void JsCompressorFrame::iter_filelist() {
 	this->files.clear();
 	Gtk::TreeNodeChildren child = this->m_filePreviewStore->children();
 	Gtk::TreeModel::iterator it;
-	for(it=child.begin();it!=child.end();it++){
+	for (it = child.begin(); it != child.end(); it++) {
 		Gtk::TreeRow row = *it;
-		this->files.push_back(row[this->m_filePreviewStore->m_colsDef.m_file_full_path]);
+		this->files.push_back(
+				row[this->m_filePreviewStore->m_colsDef.m_file_full_path]);
 		//std::cout<<tr[this->m_filePreviewStore->m_colsDef.m_file_full_path]<<std::endl;
 	}
 }
@@ -251,8 +252,11 @@ void JsCompressorFrame::evt_downtoolbtn_clicked() {
 	current = this->m_filePreviewGrid.get_selection()->get_selected();
 	if (!current)
 		return;
-
-	Gtk::TreeModel::iterator down = current++;
+	Gtk::TreeModel::iterator down = current;
+	++down;
+	if(down==this->m_filePreviewStore->children().end()){
+		return;
+	}
 	if (down) {
 		this->m_filePreviewStore->iter_swap(current, down);
 	}
