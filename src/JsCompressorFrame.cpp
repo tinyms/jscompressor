@@ -124,7 +124,7 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 		cmd.append(tinyms::FileUtils::__APSPATH__.c_str());
 		cmd.append("/jre6/bin/javaw.exe\" -jar compressorhelper.jar");
 	} else {
-		cmd.append("javaw -jar compressorhelper.jar");
+		cmd.append("java -jar compressorhelper.jar");
 	}
 	cmd.append(" -selected-folder ");
 	cmd.append(this->m_root_path_entry.get_text());
