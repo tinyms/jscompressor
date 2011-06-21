@@ -59,7 +59,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 
 	this->bind_toolbutton4treeview_events();
 
-	this->m_toolbar4treeview_vbox.set_size_request(24, -1);
+	this->m_toolbar4treeview_vbox.set_size_request(30, -1);
 	this->m_center_head_hbox.pack_start(this->m_toolbar4treeview_vbox, false,
 			false, 2);
 	//console window
@@ -101,12 +101,13 @@ void JsCompressorFrame::init() {
 	std::map<std::string, std::string> config;
 	tinyms::FileUtils::config_read(config);
 	if (config["preSelectedPath"].size() > 0) {
+		this->seletedPath = config["preSelectedPath"];
 		this->m_root_path_entry.set_text(config["preSelectedPath"]);
 		this->scan_files(config["preSelectedPath"]);
 	}
 }
 void JsCompressorFrame::evt_executeBtn_clicked() {
-	if (this->seletedPath.size() <= 0) {
+	if (this->m_root_path_entry.get_text_length() <= 0) {
 		return;
 	}
 	this->init_logfile();
@@ -234,7 +235,7 @@ void JsCompressorFrame::evt_logfile_changed(
 	this->read_logfile();
 }
 void JsCompressorFrame::read_logfile() {
-	Glib::ustring logfilePath = seletedPath + "/console.log";
+	Glib::ustring logfilePath = this->seletedPath + "/console.log";
 	Glib::ustring info = tinyms::FileUtils::read(logfilePath);
 	this->m_logBuffer = Gtk::TextBuffer::create();
 	this->m_logBuffer->set_text(info);
