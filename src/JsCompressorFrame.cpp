@@ -50,7 +50,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->m_filePreviewGrid.signal_key_release_event().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_key_release));
 	this->m_ScrolledWindow4FilePreview.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
-	this->m_ScrolledWindow4FilePreview.set_policy(Gtk::POLICY_NEVER,
+	this->m_ScrolledWindow4FilePreview.set_policy(Gtk::POLICY_AUTOMATIC,
 			Gtk::POLICY_AUTOMATIC);
 	this->m_ScrolledWindow4FilePreview.add(this->m_filePreviewGrid);
 
@@ -67,7 +67,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->m_consoleWin.set_size_request(-1, 150);
 	this->m_consoleWin.set_editable(false);
 	this->m_scrolledWindow4ConsoleWin.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
-	this->m_scrolledWindow4ConsoleWin.set_policy(Gtk::POLICY_NEVER,
+	this->m_scrolledWindow4ConsoleWin.set_policy(Gtk::POLICY_AUTOMATIC,
 			Gtk::POLICY_AUTOMATIC);
 	this->m_scrolledWindow4ConsoleWin.add(this->m_consoleWin);
 	//end
@@ -120,7 +120,7 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	}
 
 	Glib::ustring cmd;
-	if (WITH_JRE) {
+	if (OS_IS_WINDOWS) {
 		cmd.append("\"");
 		cmd.append(tinyms::FileUtils::__APSPATH__.c_str());
 		cmd.append("/jre6/bin/javaw.exe\" -jar compressorhelper.jar");
@@ -146,7 +146,9 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 
 }
 bool JsCompressorFrame::evt_gohome_clicked(GdkEventButton* eb) {
-	system("explorer http://www.tinyms.com");
+	if (OS_IS_WINDOWS){
+		system("explorer http://www.tinyms.com");
+	}
 	return true;
 }
 bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb) {

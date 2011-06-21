@@ -12,8 +12,8 @@
 #define JSCOMPRESSOR_VERSION "3.0"
 #endif
 
-#ifndef WITH_JRE
-#define WITH_JRE true
+#ifndef OS_IS_WINDOWS
+#define OS_IS_WINDOWS true
 #endif
 
 #include <iostream>
