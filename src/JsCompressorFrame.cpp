@@ -21,7 +21,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	Glib::ustring m_appTitle("JsCompressor v");
 	m_appTitle.append(JSCOMPRESSOR_VERSION);
 	this->set_title(m_appTitle);
-	Gtk::Image m_appIcon("compress.png");
+	Gtk::Image m_appIcon(tinyms::FileUtils::__APSPATH__+"/compress.png");
 	this->set_icon(m_appIcon.get_pixbuf());
 	this->set_position(Gtk::WIN_POS_CENTER);
 
@@ -118,7 +118,7 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 	Glib::ustring cmd;
 	if (OS_IS_WINDOWS) {
 		cmd.append("\"");
-		cmd.append(tinyms::FileUtils::__APSPATH__.c_str());
+		cmd.append(tinyms::FileUtils::__APSPATH__);
 		cmd.append("/jre6/bin/javaw.exe\" -jar compressorhelper.jar");
 	} else {
 		cmd.append("java -jar compressorhelper.jar");
@@ -261,10 +261,10 @@ void JsCompressorFrame::evt_refreshtoolbtn_clicked() {
 	this->scan_files(this->m_root_path_entry.get_text());
 }
 void JsCompressorFrame::bind_toolbutton4treeview_events() {
-	this->m_up_image.set("go-up.png");
-	this->m_down_image.set("go-down.png");
-	this->m_remove_image.set("window-close.png");
-	this->m_refresh_image.set("view-refresh.png");
+	this->m_up_image.set(tinyms::FileUtils::__APSPATH__+"/go-up.png");
+	this->m_down_image.set(tinyms::FileUtils::__APSPATH__+"/go-down.png");
+	this->m_remove_image.set(tinyms::FileUtils::__APSPATH__+"/window-close.png");
+	this->m_refresh_image.set(tinyms::FileUtils::__APSPATH__+"/view-refresh.png");
 	this->m_up_toolbtn.set_icon_widget(this->m_up_image);
 	this->m_up_toolbtn.set_tooltip_text("上移");
 	this->m_down_toolbtn.set_icon_widget(this->m_down_image);
