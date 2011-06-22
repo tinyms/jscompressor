@@ -1,6 +1,6 @@
 /*
  * JsCompressorFrame.h
- *
+ *  gdk_keyval_name(event->keyval)<-keyboard mapping
  *  Created on: 2011-5-20
  *      Author: tinyms
  */
@@ -20,8 +20,6 @@
 using namespace std;
 #include <gtkmm.h>
 #include <gdkmm/cursor.h>
-#include <gdk/gdkkeysyms-compat.h>
-#include <giomm/filemonitor.h>
 
 #include "FileUtils.h"
 #include "FilePreviewColumnDefinition.h"
@@ -65,7 +63,6 @@ protected:
 	Gtk::ScrolledWindow m_ScrolledWindow4FilePreview;
 	//
 	std::vector<Glib::ustring> files;
-	//Glib::RefPtr<Gio::FileMonitor> logmonitor;
 	Glib::RefPtr<Gtk::TextBuffer> m_logBuffer;
 	std::string seletedPath;
 	Gtk::TreeModel::iterator current;
@@ -75,11 +72,6 @@ protected:
 	virtual void evt_jsOrCssChkbox_clicked();
 	virtual void evt_selectFolderBtn_clicked();
 	virtual void evt_executeBtn_clicked();
-	virtual void evt_logfile_changed(const Glib::RefPtr<Gio::File>& file,
-			const Glib::RefPtr<Gio::File>& other_file,
-			Gio::FileMonitorEvent event_type);
-	virtual bool evt_key_release(GdkEventKey* event);
-	virtual bool evt_drag_motion(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
 	//
 	void init();
 	void scan_files(std::string path);

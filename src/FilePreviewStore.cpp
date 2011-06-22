@@ -17,7 +17,7 @@ Glib::RefPtr<FilePreviewStore> FilePreviewStore::create() {
 	return Glib::RefPtr<FilePreviewStore>(new FilePreviewStore());
 }
 void FilePreviewStore::evt_reordered(const TreeModel::Path& path, const TreeModel::iterator& iter, int* new_order){
-	std::cout<<"reordered"<<std::endl;
+	return;
 }
 FilePreviewStore::~FilePreviewStore() {
 	// TODO Auto-generated destructor stub

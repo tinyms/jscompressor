@@ -14,7 +14,7 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 			m_selected_path_label("文件夹(不含中文和空格):"),
 			m_tipConsoleWin("控制台 (如果有`WARNING`,可以忽略,但建议排除再压缩,直到控制台无任何提示)"),
 			m_jsOrCssChkbox("CSS(默认过滤JS)"), m_select_folder_btn(" 浏览.. "),
-			m_compress_btn(" 压缩&混淆 (DOS窗口消失则压缩完毕) ") {
+			m_compress_btn(" 压缩&混淆  ") {
 
 	//for main window
 	this->set_opacity(0.97);
@@ -43,12 +43,8 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->m_filePreviewGrid.set_rules_hint();
 	this->m_filePreviewGrid.append_column("文件名",
 			this->m_filePreviewStore->m_colsDef.m_file_full_path);
-	//this->m_filePreviewGrid.set_reorderable();
+
 	//evt for grid
-	this->m_filePreviewGrid.signal_drag_motion().connect(
-			sigc::mem_fun(*this, &JsCompressorFrame::evt_drag_motion));
-	this->m_filePreviewGrid.signal_key_release_event().connect(
-			sigc::mem_fun(*this, &JsCompressorFrame::evt_key_release));
 	this->m_ScrolledWindow4FilePreview.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 	this->m_ScrolledWindow4FilePreview.set_policy(Gtk::POLICY_AUTOMATIC,
 			Gtk::POLICY_AUTOMATIC);
@@ -159,22 +155,10 @@ bool JsCompressorFrame::evt_gohome_enter(GdkEventCrossing* eb) {
 void JsCompressorFrame::evt_jsOrCssChkbox_clicked() {
 	this->scan_files(this->m_root_path_entry.get_text());
 }
-bool JsCompressorFrame::evt_key_release(GdkEventKey* event) {
-	std::cout << gdk_keyval_name(event->keyval) << std::endl;
-	std::cout << event->string << std::endl;
-	std::cout << GDK_uparrow << std::endl;
-
-	return true;
-}
-bool JsCompressorFrame::evt_drag_motion(
-		const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time) {
-	std::cout << "zzz00" << std::endl;
-	return true;
-}
 void JsCompressorFrame::evt_selectFolderBtn_clicked() {
 	std::map<std::string, std::string> config;
 	tinyms::FileUtils::config_read(config);
-	Gtk::FileChooserDialog fcdlg("请选择一个文件夹",
+	Gtk::FileChooserDialog fcdlg("选择文件夹",
 			Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
 	if (config["preSelectedPath"].size() > 0) {
 		fcdlg.set_current_folder(config["preSelectedPath"]);
@@ -227,14 +211,7 @@ void JsCompressorFrame::iter_filelist() {
 		Gtk::TreeRow row = *it;
 		this->files.push_back(
 				row[this->m_filePreviewStore->m_colsDef.m_file_full_path]);
-		//std::cout<<tr[this->m_filePreviewStore->m_colsDef.m_file_full_path]<<std::endl;
 	}
-}
-void JsCompressorFrame::evt_logfile_changed(
-		const Glib::RefPtr<Gio::File>& file,
-		const Glib::RefPtr<Gio::File>& other_file,
-		Gio::FileMonitorEvent event_type) {
-	this->read_logfile();
 }
 void JsCompressorFrame::read_logfile() {
 	Glib::ustring logfilePath = this->seletedPath + "/console.log";
