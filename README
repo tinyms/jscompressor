@@ -1,9 +1,26 @@
-JsCompressor，用来压缩混淆JS(Javascript)与CSS，使用YUI Compressor，一个开源的Java写成的处理工具，这里仅仅做了一个比较友好的前端，方便不熟悉Java的开发者使用。最新版本已经自带JRE，无需安装。
+JsCompressor，主要用来压缩、混淆JS(Javascript)与CSS，基于YUI Compressor，目的是方便不熟悉Java或者不喜欢命令行方式进行压缩的Web开发者使用。
 
-可以压缩整个目录，分别生成带*.min.js、*.min.css的文件，还会生成一个所有js/css压缩到一个文件的allinone.min.js/allinone.min.css的文件。
+功能：
+1，可压缩、混淆整个目录(包括子目录)下的JS或者CSS文件，在同一个文件夹内生成*.min.js或者*.min.css。
+2，压缩、混淆、合并所有js或者css到一个文件，在当前选择的文件夹下自动生成allinone.min.js或者allinone.min.css。
+3，能上下调整顺序、移除后再进行压缩
+4，能自动记住上一次压缩的文件夹及启动时打开待压缩文件列表
 
-当前版本2.0，暂不支持排序后压缩，后续版本增加。
+当前版本3.0，已经可以支持Windows和linux两个平台。
 
-注意：安装路径不能空格、压缩路径不要有中文。此问题后续修复。
+<windows>
+http://www.tinyms.com/wp-content/uploads/2011/06/20110623000921.jpg
+<linux-ubuntu 11.04>
+http://www.tinyms.com/wp-content/uploads/2011/06/Screenshot-JsCompressor-v3.0.png
 
-下载：http://code.google.com/p/tinyms-tools/downloads/list
+下载windows版：
+https://github.com/downloads/tinyms/jscompressor/JsCompressor.exe
+
+下载ubuntu(11.04)版:
+https://github.com/downloads/tinyms/jscompressor/JsCompressor3.bin.ubuntu11.04.tar.gz 
+
+其它Linux平台：
+https://github.com/downloads/tinyms/jscompressor/JsCompressor3.src.tar.gz 
+解压后make，需要libgtkmm-dev支持，如果没有安装此包，make前先下载安装。
+
+最后的建议是，js或者css文件尽量用utf-8编码，还有此软件不支持压缩如ExtJS一样大的框架，主要是文件太多了。
