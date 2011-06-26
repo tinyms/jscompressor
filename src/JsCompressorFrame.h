@@ -62,6 +62,12 @@ protected:
 	Gtk::TreeView m_filePreviewGrid;
 	Gtk::ScrolledWindow m_ScrolledWindow4FilePreview;
 	//
+	Gtk::Expander m_optionpanel_expander;
+	Gtk::HBox m_optionpanel_hbox;
+	Gtk::CheckButton m_option_isallinone;
+	Gtk::CheckButton m_option_iscompress;
+
+	//
 	std::vector<Glib::ustring> files;
 	Glib::RefPtr<Gtk::TextBuffer> m_logBuffer;
 	std::string seletedPath;
@@ -84,7 +90,10 @@ protected:
 	virtual void evt_downtoolbtn_clicked();
 	virtual void evt_removetoolbtn_clicked();
 	virtual void evt_refreshtoolbtn_clicked();
+	//
 	void bind_toolbutton4treeview_events();
+	//create option panel
+	void create_option_panel_expander();
 };
 
 #endif /* JSCOMPRESSORFRAME_H_ */
