@@ -9,7 +9,7 @@
 #define JSCOMPRESSORFRAME_H_
 
 #ifndef JSCOMPRESSOR_VERSION
-#define JSCOMPRESSOR_VERSION "3.0"
+#define JSCOMPRESSOR_VERSION "5.0"
 #endif
 
 #ifndef OS_IS_WINDOWS
@@ -34,8 +34,9 @@ protected:
 	/**
 	 * layouts
 	 */
-	Gtk::VBox m_main_vbox,m_toolbar4treeview_vbox;
-	Gtk::HBox m_top_hbox, m_center_head_hbox, m_center_foot_hbox, m_bottom_hbox;
+	Gtk::VBox m_main_vbox;
+	Gtk::HBox m_toolbar_hbox, m_top_hbox, m_center_head_hbox,
+			m_center_foot_hbox, m_bottom_hbox;
 	/**
 	 * text view
 	 */
@@ -49,8 +50,10 @@ protected:
 	Gtk::Label m_home_label;
 	Gtk::EventBox m_home_eventbox;
 	// toolbuttons
-	Gtk::ToolButton m_up_toolbtn,m_down_toolbtn,m_remove_toolbtn,m_refresh_toolbtn;
-	Gtk::Image m_up_image,m_down_image,m_remove_image,m_refresh_image;
+	Gtk::ToolButton m_folder_open_toolbtn, m_up_toolbtn, m_down_toolbtn,
+			m_remove_toolbtn, m_refresh_toolbtn,m_package_toolbtn;
+	Gtk::Image m_folder_open_image, m_up_image, m_down_image, m_remove_image,
+			m_refresh_image,m_package_image;
 	/**
 	 * toolbar
 	 */

@@ -8,10 +8,9 @@
 #include "JsCompressorFrame.h"
 
 JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
-	m_main_vbox(false, 0), m_toolbar4treeview_vbox(false, 0),
-			m_top_hbox(false, 0), m_center_head_hbox(false, 0),
-			m_center_foot_hbox(false, 0), m_bottom_hbox(false, 0),
-			m_selected_path_label("文件夹(不含中文和空格):"),
+	m_main_vbox(false, 0), m_toolbar_hbox(false, 0),
+			m_center_head_hbox(false, 0), m_center_foot_hbox(false, 0),
+			m_bottom_hbox(false, 0), m_selected_path_label("文件夹(不含中文和空格):"),
 			m_tipConsoleWin("控制台 (如果有`WARNING`,可以忽略,但建议排除再压缩,直到控制台无任何提示)"),
 			m_jsOrCssChkbox("CSS(默认过滤JS)"), m_select_folder_btn(" 浏览.. "),
 			m_compress_btn(" 压缩&混淆  "), m_optionpanel_hbox(false, 0) {
@@ -25,16 +24,14 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 	this->set_icon(m_appIcon.get_pixbuf());
 	this->set_position(Gtk::WIN_POS_CENTER);
 
+	//build toolbar
+
+
 	//begin top panel
-	this->m_top_hbox.pack_start(this->m_selected_path_label, false, false, 0);
-	this->m_top_hbox.pack_start(this->m_root_path_entry, true, true, 5);
 	this->m_select_folder_btn.signal_clicked().connect(
 			sigc::mem_fun(*this,
 					&JsCompressorFrame::evt_selectFolderBtn_clicked));
-	this->m_top_hbox.pack_start(this->m_select_folder_btn, false, false, 0);
-	this->m_jsOrCssChkbox.signal_clicked().connect(
-			sigc::mem_fun(*this, &JsCompressorFrame::evt_jsOrCssChkbox_clicked));
-	this->m_top_hbox.pack_start(this->m_jsOrCssChkbox, false, false, 5);
+
 	//end
 	this->create_option_panel_expander();
 	//begin center panel
@@ -55,9 +52,8 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 
 	this->bind_toolbutton4treeview_events();
 
-	this->m_toolbar4treeview_vbox.set_size_request(30, -1);
-	this->m_center_head_hbox.pack_start(this->m_toolbar4treeview_vbox, false,
-			false, 2);
+	this->m_toolbar_hbox.set_size_request(-1, 30);
+	this->m_main_vbox.pack_start(this->m_toolbar_hbox, false, false, 2);
 	//console window
 	this->m_center_foot_hbox.pack_start(this->m_tipConsoleWin, false, false, 0);
 	this->m_consoleWin.set_size_request(-1, 150);
@@ -76,13 +72,12 @@ JsCompressorFrame::JsCompressorFrame(Gtk::WindowType type) :
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_gohome_enter));
 	this->m_home_eventbox.add(this->m_home_label);
 	this->m_bottom_hbox.pack_start(this->m_home_eventbox, false, false, 0);
-	this->m_compress_btn.signal_clicked().connect(
-			sigc::mem_fun(*this, &JsCompressorFrame::evt_executeBtn_clicked));
-	this->m_bottom_hbox.pack_end(this->m_compress_btn, false, false, 0);
+	//this->m_compress_btn.signal_clicked().connect(
+			//sigc::mem_fun(*this, &JsCompressorFrame::evt_executeBtn_clicked));
+	//this->m_bottom_hbox.pack_end(this->m_compress_btn, false, false, 0);
 	//end
-	m_main_vbox.pack_start(this->m_top_hbox, false, false, 0);
-	m_main_vbox.pack_start(this->m_optionpanel_expander, false, false, 0);
 	m_main_vbox.pack_start(this->m_center_head_hbox, true, true, 5);
+	m_main_vbox.pack_start(this->m_optionpanel_expander, false, false, 0);
 	this->m_main_vbox.pack_start(this->m_center_foot_hbox, false, false, 0);
 	this->m_main_vbox.pack_start(this->m_scrolledWindow4ConsoleWin, false,
 			false, 5);
@@ -265,25 +260,40 @@ void JsCompressorFrame::create_option_panel_expander() {
 	this->m_optionpanel_expander.set_label("参数");
 	this->m_option_isallinone.set_label("是否合并");
 	this->m_option_iscompress.set_label("是否混淆");
-	this->m_optionpanel_hbox.pack_start(this->m_option_iscompress,false,false,5);
-	this->m_optionpanel_hbox.pack_start(this->m_option_isallinone,false,false,0);
+	this->m_optionpanel_hbox.pack_start(this->m_option_iscompress, false,
+			false, 5);
+	this->m_optionpanel_hbox.pack_start(this->m_option_isallinone, false,
+			false, 0);
 	this->m_optionpanel_expander.add(this->m_optionpanel_hbox);
 }
 void JsCompressorFrame::bind_toolbutton4treeview_events() {
+	this->m_folder_open_image.set(tinyms::FileUtils::__APSPATH__ + "/folder-open.png");
 	this->m_up_image.set(tinyms::FileUtils::__APSPATH__ + "/go-up.png");
 	this->m_down_image.set(tinyms::FileUtils::__APSPATH__ + "/go-down.png");
 	this->m_remove_image.set(
 			tinyms::FileUtils::__APSPATH__ + "/window-close.png");
 	this->m_refresh_image.set(
 			tinyms::FileUtils::__APSPATH__ + "/view-refresh.png");
+	this->m_package_image.set(
+				tinyms::FileUtils::__APSPATH__ + "/package_green.png");
+	this->m_folder_open_toolbtn.set_icon_widget(this->m_folder_open_image);
+	this->m_folder_open_toolbtn.set_tooltip_text("打开");
+	this->m_folder_open_toolbtn.set_label("打开");
 	this->m_up_toolbtn.set_icon_widget(this->m_up_image);
 	this->m_up_toolbtn.set_tooltip_text("上移");
+	this->m_up_toolbtn.set_label("上移");
 	this->m_down_toolbtn.set_icon_widget(this->m_down_image);
 	this->m_down_toolbtn.set_tooltip_text("下移");
+	this->m_down_toolbtn.set_label("下移");
 	this->m_remove_toolbtn.set_icon_widget(this->m_remove_image);
 	this->m_remove_toolbtn.set_tooltip_text("移除(不会真正删除文件)");
+	this->m_remove_toolbtn.set_label("移除");
 	this->m_refresh_toolbtn.set_icon_widget(this->m_refresh_image);
 	this->m_refresh_toolbtn.set_tooltip_text("刷新(重新加载文件)");
+	this->m_refresh_toolbtn.set_label("刷新");
+	this->m_package_toolbtn.set_icon_widget(this->m_package_image);
+		this->m_package_toolbtn.set_tooltip_text("构建");
+		this->m_package_toolbtn.set_label("构建");
 	this->m_up_toolbtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_uptoolbtn_clicked));
 	this->m_down_toolbtn.signal_clicked().connect(
@@ -292,14 +302,14 @@ void JsCompressorFrame::bind_toolbutton4treeview_events() {
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_removetoolbtn_clicked));
 	this->m_refresh_toolbtn.signal_clicked().connect(
 			sigc::mem_fun(*this, &JsCompressorFrame::evt_refreshtoolbtn_clicked));
-	this->m_toolbar4treeview_vbox.pack_start(this->m_up_toolbtn, false, false,
-			0);
-	this->m_toolbar4treeview_vbox.pack_start(this->m_down_toolbtn, false,
-			false, 0);
-	this->m_toolbar4treeview_vbox.pack_start(this->m_remove_toolbtn, false,
-			false, 0);
-	this->m_toolbar4treeview_vbox.pack_start(this->m_refresh_toolbtn, false,
-			false, 10);
+
+	//
+	this->m_toolbar_hbox.pack_start(this->m_folder_open_toolbtn, false, false, 0);
+	this->m_toolbar_hbox.pack_start(this->m_up_toolbtn, false, false, 0);
+	this->m_toolbar_hbox.pack_start(this->m_down_toolbtn, false, false, 0);
+	this->m_toolbar_hbox.pack_start(this->m_remove_toolbtn, false, false, 0);
+	this->m_toolbar_hbox.pack_start(this->m_refresh_toolbtn, false, false, 0);
+	this->m_toolbar_hbox.pack_start(this->m_package_toolbtn, false, false, 15);
 }
 JsCompressorFrame::~JsCompressorFrame() {
 	// TODO Auto-generated destructor stub
