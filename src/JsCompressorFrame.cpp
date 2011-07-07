@@ -139,7 +139,7 @@ void JsCompressorFrame::evt_executeBtn_clicked() {
 }
 bool JsCompressorFrame::evt_gohome_clicked(GdkEventButton* eb) {
 	if (OS_IS_WINDOWS) {
-		system("explorer http://www.tinyms.com");
+		ShellExecute(NULL, "open", "http://www.tinyms.com",  NULL, NULL, SW_HIDE);
 	}
 	return true;
 }

@@ -17,6 +17,8 @@
 #endif
 
 #include <iostream>
+#include <windows.h>
+#include <shellapi.h>
 using namespace std;
 #include <gtkmm.h>
 #include <gdkmm/cursor.h>
@@ -24,6 +26,7 @@ using namespace std;
 #include "FileUtils.h"
 #include "FilePreviewColumnDefinition.h"
 #include "FilePreviewStore.h"
+
 using namespace tinyms;
 
 class JsCompressorFrame: public Gtk::Window {
