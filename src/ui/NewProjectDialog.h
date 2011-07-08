@@ -16,9 +16,10 @@ namespace tinyms {
 		void create_option_panel_expander();
 		virtual ~NewProjectDialog();
 	public:
-		Gtk::Label m_label1,m_label2,m_label3;
+		Gtk::Label m_label1,m_label2;
 		Gtk::FileChooserButton m_folder_chooserbtn;
 		Gtk::Entry m_project_name_entry;
+		Gtk::Frame m_option_panel_frame;
 		Gtk::HBox m_option_panel_hbox;
 		Gtk::CheckButton m_option_is_allinone,m_option_is_compress;
 	};
