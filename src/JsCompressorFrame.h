@@ -26,6 +26,7 @@ using namespace std;
 #include "FileUtils.h"
 #include "FilePreviewColumnDefinition.h"
 #include "FilePreviewStore.h"
+#include "ui/NewProjectDialog.h"
 
 using namespace tinyms;
 
@@ -67,11 +68,6 @@ protected:
 	Glib::RefPtr<tinyms::FilePreviewStore> m_filePreviewStore;
 	Gtk::TreeView m_filePreviewGrid;
 	Gtk::ScrolledWindow m_ScrolledWindow4FilePreview;
-	//
-	Gtk::Expander m_optionpanel_expander;
-	Gtk::HBox m_optionpanel_hbox;
-	Gtk::CheckButton m_option_isallinone;
-	Gtk::CheckButton m_option_iscompress;
 
 	//
 	std::vector<Glib::ustring> files;
@@ -92,6 +88,7 @@ protected:
 	void clear_log();
 	void iter_filelist();
 	//toolbutton bind events
+	virtual void evt_buildbtn_clicked();
 	virtual void evt_uptoolbtn_clicked();
 	virtual void evt_downtoolbtn_clicked();
 	virtual void evt_removetoolbtn_clicked();
